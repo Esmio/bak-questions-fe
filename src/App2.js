@@ -18,6 +18,7 @@ function App() {
   const [ items, setItems ] = useState({});
   const [ verify, setVerify ] = useState(false);
   const [ questions, setQuestions ] = useState([]);
+  const [ issue, setIssue ] = useState({});
   const [ modal, setModal ] = useState({
     show: false,
     info: '',
@@ -34,6 +35,7 @@ function App() {
       const { code, data } = r.data;
       if(code === 0) {
         setQuestions(convertData(data.list));
+        setIssue(data.issue);
       }
     }).catch(e => {
       console.log('获取问卷出错', e);
@@ -318,7 +320,7 @@ function App() {
           alignItems: 'center',
         }}
       >
-        唔哩星球玩家调研
+        {issue.title}
       </div>
       <div
         style={{

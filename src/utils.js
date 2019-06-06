@@ -41,3 +41,29 @@ export const convertData = (arr) => {
         return obj;
     })
 }
+
+export const convertQandaData = (arr) => {
+    return arr.map((item, index) => {
+        const { number, type, title, multi, multi_answer, other_value, options, required, answer, score } = item;
+        let obj = {
+            number,
+            type,
+            title,
+            required,
+            answer,
+            multi_answer,
+            score,
+        };
+        if(type === 'choice') {
+            obj.answers = convertOptions(options);
+            if(!!other_value) obj.otherValue = other_value;
+        }
+        if(type === 'multiselector') {
+            obj.options = convertOptions(options);
+            if(!!other_value) obj.otherValue = other_value;
+            if(multi === 0) obj.multi = true;
+            if(!!multi) obj.multi = multi;
+        }
+        return obj;
+    })
+}
