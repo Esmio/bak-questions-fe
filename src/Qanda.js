@@ -17,6 +17,8 @@ import MultiSelector from './components/qanda/MultiSelector';
 const parsed = queryString.parse(window.location.search);
 const { uid } = parsed;
 
+const PAGE_NUM = 20;
+
 function App() {
     const [ableToSubmit, setAbleToSubmit] = useState(false);
     const [items, setItems] = useState({});
@@ -117,7 +119,7 @@ function App() {
             }
             setVerify(false);
             setTab(tab + 1);
-            if (questions.length - (tab + 1) * 4 <= 0) {
+            if (questions.length - (tab + 1) * PAGE_NUM <= 0) {
                 setAbleToSubmit(true);
             }
             document.documentElement.scrollTop = 0;
@@ -144,7 +146,7 @@ function App() {
     const verifyItems = () => {
         setVerify(true)
         let canSubmit = true;
-        const toRender = questions.slice((tab - 1) * 4, tab * 4);
+        const toRender = questions.slice((tab - 1) * PAGE_NUM, tab * PAGE_NUM);
         toRender.some((item, index) => {
             const { type, number, required, answer, multi_answer } = item;
             const valueObj = items[number];
@@ -195,7 +197,7 @@ function App() {
     }
 
     const _renderQuestions = () => {
-        const toRender = questions.slice((tab - 1) * 4, tab * 4);
+        const toRender = questions.slice((tab - 1) * PAGE_NUM, tab * PAGE_NUM);
         const nodes = toRender.map((item, index) => {
             const { type } = item;
             if (type === 'choice') {
@@ -255,6 +257,7 @@ function App() {
                 counter={counter}
                 tab={tab}
                 total={questions.length}
+                pageSize={PAGE_NUM}
             />
             <QandaWrapper>
                 {
